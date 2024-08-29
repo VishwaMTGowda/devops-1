@@ -1,0 +1,50 @@
+pipeline {
+    agent any  // Runs on any available agent
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Cloning the Git repository
+                git branch: 'main', url: 'https://github.com/VishwaMTGowda/devops-1.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Building the project using Maven
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Running tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Simulating deployment (replace with actual deployment steps)
+                echo 'Deploying application...'
+                // Example: sh './deploy.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Actions to run regardless of build result
+            echo 'Cleaning up workspace...'
+            cleanWs() // Cleans up the workspace
+        }
+        success {
+            // Actions to run on successful build
+            echo 'Build completed successfully!'
+        }
+        failure {
+            // Actions to run on build failure
+            echo 'Build failed. Please check logs for details.'
+        }
+    }
+}
